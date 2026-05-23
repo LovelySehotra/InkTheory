@@ -1,0 +1,60 @@
+datasource db {
+  provider = "postgresql"
+}
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/client"
+}
+
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  COMPLETED
+  CANCELLED
+}
+
+model Booking {
+  id               String        @id @default(uuid())
+  name             String
+  phone            String
+  email            String
+  tattooIdea       String        @db.Text
+  placement        String
+  size             String
+  budget           String
+  preferredDate    DateTime
+  preferredArtist  String
+  referenceImage   String?       // Cloudinary URL or local fallback path
+  status           BookingStatus @default(PENDING)
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+}
+
+model Artist {
+  id          String    @id @default(uuid())
+  name        String
+  bio         String    @db.Text
+  specialty   String[]  // Array of styles (Realism, Blackwork, etc.)
+  instagram   String?
+  experience  String    // e.g. "8 Years"
+  image       String    // Profile image URL
+  createdAt   DateTime  @default(now())
+}
+
+model Gallery {
+  id        String   @id @default(uuid())
+  image     String   // Image URL
+  category  String   // Realism, Anime, Minimal, Traditional, Blackwork, Geometric
+  title     String
+  artistId  String?
+  createdAt DateTime @default(now())
+}
+
+model Contact {
+  id        String   @id @default(uuid())
+  name      String
+  email     String
+  message   String   @db.Text
+  createdAt DateTime @default(now())
+}
