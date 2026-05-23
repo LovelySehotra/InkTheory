@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from 'react';
 import { MessageSquare, X, Send, Bot, User } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import axios from 'axios';
+import { API_ENDPOINTS } from '@/lib/config';
 
 interface Message {
   role: 'user' | 'assistant';
@@ -39,7 +40,7 @@ export default function Chatbot() {
 
     try {
       // API call to our backend ChatbotController
-      const response = await axios.post('http://localhost:5001/chatbot/message', {
+      const response = await axios.post(API_ENDPOINTS.chatbot, {
         message: userMsg,
         history: messages,
       });

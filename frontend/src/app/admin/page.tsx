@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import { API_ENDPOINTS } from '@/lib/config';
 import { motion } from 'framer-motion';
 import { Calendar, User, FileText, Check, X, CheckSquare, Trash, Mail, Eye, Activity } from 'lucide-react';
 
@@ -37,10 +38,10 @@ export default function AdminPage() {
   const fetchAdminData = async () => {
     setLoading(true);
     try {
-      const bookingsRes = await axios.get('http://localhost:5001/bookings');
+      const bookingsRes = await axios.get(API_ENDPOINTS.bookings);
       setBookings(bookingsRes.data);
 
-      const inquiriesRes = await axios.get('http://localhost:5001/contact');
+      const inquiriesRes = await axios.get(API_ENDPOINTS.contact);
       setInquiries(inquiriesRes.data);
     } catch (err) {
       console.error('Failed to load admin data', err);
@@ -55,7 +56,7 @@ export default function AdminPage() {
 
   const handleUpdateStatus = async (id: string, status: 'CONFIRMED' | 'COMPLETED' | 'CANCELLED') => {
     try {
-      await axios.patch(`http://localhost:5001/bookings/${id}/status`, { status });
+      await axios.patch(API_ENDPOINTS.bookingStatus(id), { status });
       // Update local state
       setBookings((prev) =>
         prev.map((b) => (b.id === id ? { ...b, status } : b))

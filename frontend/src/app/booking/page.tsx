@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import axios from 'axios';
+import { API_ENDPOINTS, UPLOAD_FALLBACK_IMAGE } from '@/lib/config';
 import { motion } from 'framer-motion';
 import { Calendar, User, FileText, Image as ImageIcon, CheckCircle, Upload, AlertCircle } from 'lucide-react';
 
@@ -50,7 +51,7 @@ export default function BookingPage() {
     formData.append('file', file);
 
     try {
-      const res = await axios.post('http://localhost:5001/upload', formData, {
+      const res = await axios.post(API_ENDPOINTS.upload, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -59,7 +60,7 @@ export default function BookingPage() {
     } catch (err) {
       console.error('File upload failed, using random tattoo placeholder', err);
       // Fail-safe default placeholder image URL in case Cloudinary/fs falls back
-      setReferenceUrl('https://images.unsplash.com/photo-1598257006458-087169a1f08d?auto=format&fit=crop&q=80&w=600');
+      setReferenceUrl(UPLOAD_FALLBACK_IMAGE);
     } finally {
       setIsUploading(false);
     }
@@ -74,7 +75,7 @@ export default function BookingPage() {
         referenceImage: referenceUrl || undefined,
       };
 
-      const res = await axios.post('http://localhost:5001/bookings', payload);
+      const res = await axios.post(API_ENDPOINTS.bookings, payload);
       setSuccessData(res.data);
     } catch (err: any) {
       console.error('Booking submission failed', err);

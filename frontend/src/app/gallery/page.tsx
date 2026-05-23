@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { motion as motionModule, AnimatePresence as AnimatePresenceModule } from 'framer-motion';
 import { X, ZoomIn, Info } from 'lucide-react';
 import axios from 'axios';
+import { API_ENDPOINTS } from '@/lib/config';
 import Link from 'next/link';
 
 interface GalleryItem {
@@ -100,7 +101,7 @@ export default function GalleryPage() {
     const fetchGallery = async () => {
       try {
         const queryParams = selectedCategory !== 'All' ? `?category=${selectedCategory}` : '';
-        const res = await axios.get(`http://localhost:5001/gallery${queryParams}`);
+        const res = await axios.get(`${API_ENDPOINTS.gallery}${queryParams}`);
         setItems(res.data.length > 0 ? res.data : fallbackGallery.filter(item => selectedCategory === 'All' || item.category === selectedCategory));
       } catch (err) {
         console.warn('Backend offline, using local fallback gallery data.');

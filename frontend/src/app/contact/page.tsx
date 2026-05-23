@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import axios from 'axios';
+import { API_ENDPOINTS } from '@/lib/config';
 import { motion } from 'framer-motion';
 import { MapPin, Phone, Mail, Clock, CheckCircle, Send, AlertCircle } from 'lucide-react';
 
@@ -34,7 +35,7 @@ export default function ContactPage() {
     setIsSubmitting(true);
     setSubmitError('');
     try {
-      await axios.post('http://localhost:5001/contact', data);
+      await axios.post(API_ENDPOINTS.contact, data);
       setSuccess(true);
       reset();
     } catch (err: any) {

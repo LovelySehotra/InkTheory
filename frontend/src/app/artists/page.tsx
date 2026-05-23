@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Star, Award, Sparkles } from 'lucide-react';
 import axios from 'axios';
+import { API_ENDPOINTS } from '@/lib/config';
 import Link from 'next/link';
 
 interface Artist {
@@ -52,7 +53,7 @@ export default function ArtistsPage() {
   useEffect(() => {
     const fetchArtists = async () => {
       try {
-        const res = await axios.get('http://localhost:5001/artists');
+        const res = await axios.get(API_ENDPOINTS.artists);
         setArtists(res.data.length > 0 ? res.data : fallbackArtists);
       } catch (err) {
         console.warn('Backend offline, using fallback artists data.');

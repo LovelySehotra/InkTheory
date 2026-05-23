@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { Shield, Sparkles, Star, ChevronDown, Award, HelpCircle, PhoneCall } from 'lucide-react';
 import axios from 'axios';
+import { API_ENDPOINTS } from '@/lib/config';
 
 interface Artist {
   id: string;
@@ -80,7 +81,7 @@ export default function Home() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const artistsRes = await axios.get('http://localhost:5001/artists');
+        const artistsRes = await axios.get(API_ENDPOINTS.artists);
         setArtists(artistsRes.data.length > 0 ? artistsRes.data : fallbackArtists);
       } catch (err) {
         console.warn('Backend offline, using fallback artists.');
@@ -88,7 +89,7 @@ export default function Home() {
       }
 
       try {
-        const galleryRes = await axios.get('http://localhost:5001/gallery');
+        const galleryRes = await axios.get(API_ENDPOINTS.gallery);
         setGallery(galleryRes.data.length > 0 ? galleryRes.data.slice(0, 4) : fallbackGallery);
       } catch (err) {
         console.warn('Backend offline, using fallback gallery.');
